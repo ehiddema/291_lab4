@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import sys, time, math, serial
 
-xsize=100
+xsize=50
    
 def data_gen():
     t = data_gen.t
@@ -43,7 +43,7 @@ fig = plt.figure()
 fig.canvas.mpl_connect('close_event', on_close_figure)
 ax = fig.add_subplot(111)
 line, = ax.plot([], [], lw=2)
-ax.set_ylim(0, 100)
+ax.set_ylim(0, 250)
 ax.set_xlim(0, xsize)
 ax.grid()
 xdata, ydata = [], []
