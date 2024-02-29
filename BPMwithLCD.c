@@ -235,6 +235,7 @@ void main (void)
 	float period;
     int BPM;
     char sBPM[17]; //string variable for displaying BPM
+    //char avesBPM[17];
 	float aveBPM = 0.0; // might want to change to d-type double...
 	int n = 0;
 	
@@ -244,12 +245,12 @@ void main (void)
 	printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
 	
     LCDprint("HEART RATE:", 1, 1);
-    LCDprint("            ", 2, 1);
+    LCDprint("ready!", 2, 1);
 
-	printf ("EFM8 Period measurement at pin P0.1 using Timer 0.\n"
-	        "File: %s\n"
-	        "Compiled: %s, %s\n\n",
-	        __FILE__, __DATE__, __TIME__);
+	//printf ("EFM8 Period measurement at pin P0.1 using Timer 0.\n"
+	        //"File: %s\n"
+	        //"Compiled: %s, %s\n\n",
+	        //__FILE__, __DATE__, __TIME__);
 
     while (1)
     {
@@ -283,7 +284,7 @@ void main (void)
         BPM = (int)(60000.0/(period*1000.0));
 		
 		// Send the period to the serial port
-		printf( "\rheart rate=%f bpm    ", (60000.0/(period*1000.0)));
+		//printf( "\rheart rate=%f bpm    ", (60000.0/(period*1000.0)));
 		if (BPM>250) {
 		LCDprint("Adjust Sensor!",2,1);
         }
@@ -292,16 +293,12 @@ void main (void)
         LCDprint(sBPM, 2, 1); 
 
 		// CALCULATES RUNNING AVERAGE BPM
-		// aveBPM = aveBPM + (BPM - aveBPM)/n;
-		// n++;
 		aveBPM -= aveBPM/((float)n); 	
 		aveBPM += ((float)BPM)/((float)n);
 		n++;
 
-		sprintf(sBPM, "%d", aveBPM);
-		LCDprint(sBPM, 2, 10);
 
-		printf("aveBPM: %f", aveBPM);
+		printf("%f", aveBPM);
 		printf("\n");
         }
 
