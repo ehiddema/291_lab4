@@ -298,6 +298,9 @@ void main (void)
 		aveBPM += ((float)BPM)/((float)n);
 		n++;
 
+		sprintf(sBPM, "%d", aveBPM);
+		LCDprint(sBPM, 2, 10);
+
 		printf("aveBPM: %f", aveBPM);
 		printf("\n");
         }
