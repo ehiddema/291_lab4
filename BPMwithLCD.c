@@ -219,16 +219,30 @@ void TIMER0_Init(void)
 	TR0=0; // Stop Timer/Counter 0
 }
 
+int calcRunAve(double inVal, int total) {
+	int n = 1;
+	int currAve = 0; // might want to change d-type to double?
+
+	while (n <= total) {
+		currAve = currAve + (inVal - currAve)/n;
+		n++;
+	}
+	return currAve;
+}
+
 void main (void) 
 {
 	float period;
     int BPM;
     char sBPM[17]; //string variable for displaying BPM
+	float aveBPM = 0.0; // might want to change to d-type double...
+	int n = 0;
 	
 	TIMER0_Init();
 
 	waitms(500); // Give PuTTY a chance to start.
 	printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
+	
     LCDprint("HEART RATE:", 1, 1);
     LCDprint("            ", 2, 1);
 
@@ -270,12 +284,22 @@ void main (void)
 		
 		// Send the period to the serial port
 		printf( "\rheart rate=%f bpm    ", (60000.0/(period*1000.0)));
-		elif (BPM>250) {
+		if (BPM>250) {
 		LCDprint("Adjust Sensor!",2,1);
         }
 		else {
         sprintf(sBPM, "%d", BPM); //converts BPM (an int value) into a string for LCDprint
         LCDprint(sBPM, 2, 1); 
+
+		// CALCULATES RUNNING AVERAGE BPM
+		// aveBPM = aveBPM + (BPM - aveBPM)/n;
+		// n++;
+		aveBPM -= aveBPM/((float)n); 	
+		aveBPM += ((float)BPM)/((float)n);
+		n++;
+
+		printf("aveBPM: %f", aveBPM);
+		printf("\n");
         }
 
         
